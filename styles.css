@@ -86,6 +86,12 @@ h1 { font-size: clamp(54px, 6.3vw, 92px); line-height: .98; letter-spacing: -.04
 .module-list li { display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
 .module-list span { color: var(--orange-dark); font-size: 12px; font-weight: 700; }
 .back-button { border: 0; border-radius: 5px; padding: 13px 20px; background: var(--ink); color: white; margin-top: 30px; cursor: pointer; }
+.embedded-material { margin-top: 80px; padding-top: 55px; border-top: 1px solid var(--line); }
+.embedded-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 24px; }
+.embedded-heading h2 { margin: 0; font-size: 36px; }
+.embedded-heading .eyebrow { margin-bottom: 10px; }
+.embedded-heading a { color: var(--orange-dark); font-size: 13px; font-weight: 700; }
+.embedded-material iframe { display: block; width: 100%; min-height: 620px; border: 1px solid var(--line); border-radius: 8px; background: white; }
 
 footer { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 46px clamp(24px, 6vw, 88px); background: var(--ink); color: white; }
 footer p { color: #abb4c5; font-size: 13px; }
@@ -100,5 +106,7 @@ footer p { color: #abb4c5; font-size: 13px; }
   .semester-grid { grid-template-columns: 1fr 1fr; }.course-grid { grid-template-columns: 1fr; }
   .course-meta { border-left: 0; padding: 0; }.course-layout { gap: 35px; }
   footer { flex-direction: column; text-align: center; }
+  .embedded-heading { align-items: start; flex-direction: column; }
+  .embedded-material iframe { min-height: 760px; }
 }
 @media (max-width: 520px) { .path-grid, .semester-grid { grid-template-columns: 1fr; }.path-card { padding: 30px; }.page { padding-top: 55px; } }

@@ -3,7 +3,7 @@ const catalog = {
     label: "Undergraduate",
     description: "Build a rigorous foundation in the laws that govern matter, energy, space, and time.",
     semesters: [
-      ["PHY101", "Classical Mechanics", "Motion, forces, energy and the mathematical language of mechanics."],
+      ["PHY101", "Classical Mechanics", "Motion, forces, energy and the mathematical language of mechanics.", "data/ug/sem1/classical-mechanics/index.html"],
       ["PHY103", "Mathematical Methods", "Vectors, calculus and differential equations for physical systems."],
       ["PHY105", "Experimental Physics", "Measurement, uncertainty and scientific practice in the laboratory."]
     ]
@@ -48,7 +48,10 @@ function coursePage(level, semester, index) {
   const data = catalog[level];
   const course = data.semesters[index];
   const code = course[0].replace(/\d/, String(semester));
-  app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${level}">${data.label}</button> &nbsp;/&nbsp; <button data-action="semester" data-level="${level}" data-semester="${semester}">Semester ${semester}</button> &nbsp;/&nbsp; ${code}</div><div class="course-layout"><div><p class="eyebrow">${code} · Semester ${semester}</p><h1>${course[1]}</h1><p class="lead">${course[2]} This course page is ready for lecture notes, problem sheets, readings, and assessments.</p><h2 style="font-size:36px;margin-top:55px">Course modules</h2><ol class="module-list"><li><span>01</span>Foundations and core concepts</li><li><span>02</span>Methods and worked examples</li><li><span>03</span>Applications and problem solving</li><li><span>04</span>Review and assessment</li></ol></div><aside class="course-meta"><div class="meta-row"><small>Course level</small>${data.label}</div><div class="meta-row"><small>Semester</small>${semester}</div><div class="meta-row"><small>Course code</small>${code}</div><div class="meta-row"><small>Course materials</small>Notes · Problems · Reading</div><button class="back-button" data-action="semester" data-level="${level}" data-semester="${semester}">← All courses</button></aside></div></section>`;
+  const embeddedContent = course[3] && course[3].includes(`/sem${semester}/`)
+    ? `<section class="embedded-material"><div class="embedded-heading"><div><p class="eyebrow">Course material</p><h2>Lecture content</h2></div><a href="${course[3]}" target="_blank" rel="noopener">Open in a new tab ↗</a></div><iframe src="${course[3]}" title="${course[1]} course content" loading="lazy"></iframe></section>`
+    : "";
+  app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${level}">${data.label}</button> &nbsp;/&nbsp; <button data-action="semester" data-level="${level}" data-semester="${semester}">Semester ${semester}</button> &nbsp;/&nbsp; ${code}</div><div class="course-layout"><div><p class="eyebrow">${code} · Semester ${semester}</p><h1>${course[1]}</h1><p class="lead">${course[2]} This course page is ready for lecture notes, problem sheets, readings, and assessments.</p><h2 style="font-size:36px;margin-top:55px">Course modules</h2><ol class="module-list"><li><span>01</span>Foundations and core concepts</li><li><span>02</span>Methods and worked examples</li><li><span>03</span>Applications and problem solving</li><li><span>04</span>Review and assessment</li></ol></div><aside class="course-meta"><div class="meta-row"><small>Course level</small>${data.label}</div><div class="meta-row"><small>Semester</small>${semester}</div><div class="meta-row"><small>Course code</small>${code}</div><div class="meta-row"><small>Course materials</small>Notes · Problems · Reading</div><button class="back-button" data-action="semester" data-level="${level}" data-semester="${semester}">← All courses</button></aside></div>${embeddedContent}</section>`;
 }
 
 function aboutPage() {

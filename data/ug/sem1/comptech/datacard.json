@@ -50,9 +50,20 @@
   ],
   "simulators": [
     {
-      "name": "Python Simulator",
-      "desc": "tatic browser simulators for teaching Python basics, scientific programming, and data handling.",
+      "name": "Python",
+      "desc": "Static browser tools for teaching Python basics, scientific programming, and data handling.",
       "link": "simulators/python.html"
-    }
+    },
+    {
+      "name": "Latex",
+      "desc": "Scientific Word Processing with LaTeX",
+      "link": "simulators/latex.html"
+    },
+    {
+      "name": "Gnuplot",
+      "desc": "Data Analysis and Visualization with Gnuplot",
+      "link": "simulators/latex.html"
+    },
+    
   ]
 }

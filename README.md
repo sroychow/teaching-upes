@@ -1,6 +1,8 @@
-# Orbit Physics
+# UPES Physics · Applied Science Cluster
 
 A responsive, static course-content website for undergraduate and postgraduate physics teaching.
+
+Place the university logo at `upes-logo.png` in the repository root. The site header displays this image beside the **UPES Physics · Applied Science Cluster** identity.
 
 ## Local preview
 

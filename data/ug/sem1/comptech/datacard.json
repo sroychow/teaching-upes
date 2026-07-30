@@ -63,7 +63,6 @@
       "name": "Gnuplot",
       "desc": "Data Analysis and Visualization with Gnuplot",
       "link": "simulators/gnuplot.html"
-    },
-    
+    }
   ]
 }

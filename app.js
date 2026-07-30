@@ -7,6 +7,9 @@ const catalog = {
       1: [
         { code: "PHYS1037", name: "Mathematical Physics I", description: "Calculus, vector analysis, matrices, and mathematical methods for physics.", dataCard: "data/ug/sem1/mp1/datacard.json" },
         { code: "MECH1012", name: "Mechanics", description: "", dataCard: "data/ug/sem1/mechanics/datacard.json" },
+        { code: "PHYSXXXX", name: "Waves and Oscillations", description: "", dataCard: "data/ug/sem1/waves-oscillations/datacard.json" },
+	{ code: "PHYSXXXX", name: "Optics", description: "", dataCard: "data/ug/sem1/optics/datacard.json" },        
+	{ code: "CSEG1023", name: "Computational Techniques", description: "", dataCard: "data/ug/sem1/comptech/datacard.json" },
         ],
       2: [],
       3: [],

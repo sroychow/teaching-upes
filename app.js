@@ -5,9 +5,7 @@ const catalog = {
     description: "Build a rigorous foundation in the laws that govern matter, energy, space, and time.",
     coursesBySemester: {
       1: [
-        { code: "PHYS1037", name: "Mathematical Physics", description: "", dataCard: "data/ug/sem1/mp1/datacard.json", content: "" },
-        { code: "PHY103", name: "Mathematical Methods", description: "Vectors, calculus and differential equations for physical systems.", dataCard: "data/ug/sem1/mathematical-methods/datacard.json" },
-        { code: "PHY105", name: "Experimental Physics", description: "Measurement, uncertainty and scientific practice in the laboratory.", dataCard: "data/ug/sem1/experimental-physics/datacard.json" }
+        { code: "PHYS1037", name: "Mathematical Physics1", description: "", dataCard: "data/ug/sem1/mp1/datacard.json", content: "" },
       ],
       2: [],
       3: [],

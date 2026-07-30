@@ -30,7 +30,7 @@ document.querySelector("#year").textContent = new Date().getFullYear();
 
 function home() {
   app.innerHTML = `<section class="hero"><div class="hero-copy"><p class="eyebrow">Department of Physics</p><h1>Understand the universe.</h1><p>Explore course materials designed to turn curiosity into insight — from the first principles of motion to the frontiers of modern physics.</p></div><div class="hero-art" aria-label="Abstract illustration of planetary orbits"><span class="orbit"></span><span class="orbit two"></span><span class="planet"></span><i class="star s1"></i><i class="star s2"></i><i class="star s3"></i><i class="star s4"></i><i class="star s5"></i></div></section>
-  <section class="pathways"><div class="section-heading"><div><p class="eyebrow">Choose your pathway</p><h2>Where are you in your journey?</h2></div><p>Select your level to find courses and resources organised by semester.</p></div><div class="path-grid">${pathCard("undergraduate", "01", "Undergraduate", "Develop strong foundations through clear theory, guided problems and experiments.")}${pathCard("postgraduate", "02", "Postgraduate", "Deepen your expertise with advanced topics.")}</div></section>`;
+  <section class="pathways"><div class="section-heading"><div><p class="eyebrow">Choose your pathway</p><h2>Where are you in your journey?</h2></div><p>Select your level to find courses and resources organised by semester.</p></div><div class="path-grid">${pathCard("undergraduate", "01", "Undergraduate", "Develop strong foundations through clear theory, guided problems and practical experiments.")}${pathCard("postgraduate", "02", "Postgraduate", "Deepen your expertise with advanced topics and research-focused learning.")}</div></section>`;
 }
 
 function pathCard(key, number, title, copy) {
@@ -39,44 +39,7 @@ function pathCard(key, number, title, copy) {
 
 function levelPage(level) {
   const data = catalog[level];
-
-  const semesterButtons = Array.from(
-    { length: data.semesterCount },
-    (_, index) => index + 1
-  ).map(n => `
-    <button
-      class="semester-card"
-      data-action="semester"
-      data-level="${level}"
-      data-semester="${n}"
-    >
-      <span>${String(n).padStart(2, "0")}</span>
-      <strong>Semester ${n}</strong>
-      <small>${n === 1 ? "3 courses available" : "Course template ready"}</small>
-    </button>
-  `).join("");
-
-  app.innerHTML = `
-    <section class="page intro">
-      <div class="breadcrumb">
-        <button data-action="home">Home</button>
-        &nbsp;/&nbsp;
-        ${data.label}
-      </div>
-
-      <p class="eyebrow">Select a semester</p>
-      <h1>${data.label} Physics</h1>
-
-      <p class="lead">
-        ${data.description}
-        Choose your current semester to see the available courses.
-      </p>
-
-      <div class="semester-grid">
-        ${semesterButtons}
-      </div>
-    </section>
-  `;
+  app.innerHTML = `<section class="page intro"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; ${data.label}</div><p class="eyebrow">Select a semester</p><h1>${data.label} Physics</h1><p class="lead">${data.description} Choose your current semester to see the available courses.</p><div class="semester-grid">${[1,2,3,4].map(n => `<button class="semester-card" data-action="semester" data-level="${level}" data-semester="${n}"><span>0${n}</span><strong>Semester ${n}</strong><small>${n === 1 ? "3 courses available" : "Course template ready"}</small></button>`).join("")}</div></section>`;
 }
 
 function semesterPage(level, semester) {
@@ -96,7 +59,7 @@ function coursePage(level, semester, index) {
 }
 
 function aboutPage() {
-  app.innerHTML = `<section class="page intro"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; About</div><p class="eyebrow">Our teaching</p><h1>Physics starts with a good question.</h1><p class="lead">This webpage is designed to host learning resources for undergraduate and postgraduate teaching. Faculties will guide you to explore specific course content which you shall need.</p><div class="path-grid" style="margin-top:55px"><div class="path-card"><span class="number">LEARN</span><h3>Clear foundations</h3><p>Structured pathways help every student find the right material quickly.</p></div><div class="path-card"><span class="number">EXPLORE</span><h3>Room for discovery</h3><p>Course pages provide a dependable home for lectures, problems and resources.</p></div></div></section>`;
+  app.innerHTML = `<section class="page intro"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; About</div><p class="eyebrow">Our teaching</p><h1>Physics starts with a good question.</h1><p class="lead">UPES Physics is a flexible course-content template for undergraduate and postgraduate teaching in the Applied Science Cluster. Add your own notes, recordings, assignments, and reading lists to each course page as the curriculum grows.</p><div class="path-grid" style="margin-top:55px"><div class="path-card"><span class="number">LEARN</span><h3>Clear foundations</h3><p>Structured pathways help every student find the right material quickly.</p></div><div class="path-card"><span class="number">EXPLORE</span><h3>Room for discovery</h3><p>Course pages provide a dependable home for lectures, problems and resources.</p></div></div></section>`;
 }
 
 function navigate(view, params = {}, push = true) {
@@ -107,7 +70,7 @@ function navigate(view, params = {}, push = true) {
   if (view === "course") coursePage(params.level, params.semester, Number(params.course));
   const query = view === "home" ? "" : `?view=${view}&${new URLSearchParams(params)}`;
   if (push) history.pushState({ view, ...params }, "", `./${query}`);
-  document.title = `${view === "home" ? "Orbit Physics" : "Courses"} · Orbit Physics`;
+  document.title = `${view === "home" ? "UPES Physics" : "Courses"} · Applied Science Cluster`;
   window.scrollTo(0, 0); app.focus({ preventScroll: true }); nav.classList.remove("open"); menu.setAttribute("aria-expanded", "false");
 }
 

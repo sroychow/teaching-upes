@@ -25,8 +25,11 @@ a { color: inherit; text-decoration: none; }
 }
 .brand { display: inline-flex; align-items: center; gap: 14px; font-size: 13px; font-weight: 500; }
 .brand b { font-weight: 700; }
-.university-logo { display: block; width: 110px; height: 48px; object-fit: contain; }
-.logo-fallback { display: grid; height: 48px; min-width: 74px; place-items: center; border: 1px solid var(--line); color: var(--ink); font-size: 14px; font-weight: 700; letter-spacing: .12em; }
+.logo-container { display: grid; width: 110px; height: 48px; flex: 0 0 auto; place-items: center; }
+.university-logo, .logo-fallback { grid-area: 1 / 1; }
+.university-logo { display: block; z-index: 1; width: 100%; height: 100%; background: white; object-fit: contain; }
+.university-logo.logo-unavailable { display: none; }
+.logo-fallback { display: grid; width: 100%; height: 100%; place-items: center; border: 1px solid var(--line); color: var(--ink); font-size: 14px; font-weight: 700; letter-spacing: .12em; }
 .brand-name { display: flex; flex-direction: column; gap: 3px; line-height: 1.1; }
 .brand-name b { font-size: 15px; letter-spacing: .04em; }
 .brand-name small { color: var(--muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
@@ -112,4 +115,10 @@ footer p { color: #abb4c5; font-size: 13px; }
   .embedded-material iframe { min-height: 760px; }
 }
 @media (max-width: 520px) { .path-grid, .semester-grid { grid-template-columns: 1fr; }.path-card { padding: 30px; }.page { padding-top: 55px; } }
-
+@media (max-width: 430px) {
+  .site-header { min-height: 82px; height: auto; padding: 12px 18px; }
+  .logo-container { width: 76px; height: 40px; }
+  .brand { gap: 9px; }
+  .brand-name b { font-size: 13px; }
+  .brand-name small { max-width: 120px; font-size: 8px; }
+}

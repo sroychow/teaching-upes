@@ -1,32 +1,38 @@
- const catalog = {
-   undergraduate: {
-     label: "Undergraduate",
-+    semesterCount: 8,
-     description: "Build a rigorous foundation in the laws that govern matter, energy, space, and time.",
-     semesters: [
-       ["PHYS1037", "Mathematical Physics 1", "4(3, 1, 0) credits", ""],
-       ["MECH1012", "Mechanics", "4(3, 0, 1) credits", "data/ug/sem1/mechanics/index.html"],
-       ["PHYSXXXX", "Waves and Oscillations", "2(2,0,0) credits"],
-       ["PHYSXXXX", "Optics", "4 (3,0,1) credits"],
-       ["CSEG1023", "Computational Techniques", "2(0,0,2) credits"]
-     ]
-   },
-   postgraduate: {
-     label: "Postgraduate",
-+    semesterCount: 4,
-     description: "Move beyond the fundamentals through advanced theory, computation, and research-led study.",
-     semesters: [
-       ["PHY501", "Advanced Quantum Mechanics", "Symmetries, approximation methods and quantum dynamics."],
-       ["PHY503", "Statistical Field Theory", "Collective phenomena, phase transitions and renormalisation."],
-       ["PHY505", "Research Methods", "Literature, reproducible computation and research communication."]
-     ]
-   }
- };
- 
+const catalog = {
+  undergraduate: {
+    label: "Undergraduate",
+    semesterCount: 8,
+    description: "Build a rigorous foundation in the laws that govern matter, energy, space, and time.",
+    semesters: [
+      ["PHY101", "Classical Mechanics", "Motion, forces, energy and the mathematical language of mechanics.", "data/ug/sem1/classical-mechanics/index.html"],
+      ["PHY103", "Mathematical Methods", "Vectors, calculus and differential equations for physical systems."],
+      ["PHY105", "Experimental Physics", "Measurement, uncertainty and scientific practice in the laboratory."]
+    ]
+  },
+  postgraduate: {
+    label: "Postgraduate",
+    semesterCount: 4,
+    description: "Move beyond the fundamentals through advanced theory, computation, and research-led study.",
+    semesters: [
+      ["PHY501", "Advanced Quantum Mechanics", "Symmetries, approximation methods and quantum dynamics."],
+      ["PHY503", "Statistical Field Theory", "Collective phenomena, phase transitions and renormalisation."],
+      ["PHY505", "Research Methods", "Literature, reproducible computation and research communication."]
+    ]
+  }
+};
+
 const app = document.querySelector("#app");
 const nav = document.querySelector("nav");
 const menu = document.querySelector(".menu-button");
+const universityLogo = document.querySelector(".university-logo");
 document.querySelector("#year").textContent = new Date().getFullYear();
+
+function showLogoFallback() {
+  universityLogo.classList.add("logo-unavailable");
+}
+
+universityLogo.addEventListener("error", showLogoFallback);
+if (universityLogo.complete && universityLogo.naturalWidth === 0) showLogoFallback();
 
 function home() {
   app.innerHTML = `<section class="hero"><div class="hero-copy"><p class="eyebrow">Department of Physics</p><h1>Understand the universe.</h1><p>Explore course materials designed to turn curiosity into insight — from the first principles of motion to the frontiers of modern physics.</p></div><div class="hero-art" aria-label="Abstract illustration of planetary orbits"><span class="orbit"></span><span class="orbit two"></span><span class="planet"></span><i class="star s1"></i><i class="star s2"></i><i class="star s3"></i><i class="star s4"></i><i class="star s5"></i></div></section>
@@ -39,7 +45,8 @@ function pathCard(key, number, title, copy) {
 
 function levelPage(level) {
   const data = catalog[level];
-  app.innerHTML = `<section class="page intro"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; ${data.label}</div><p class="eyebrow">Select a semester</p><h1>${data.label} Physics</h1><p class="lead">${data.description} Choose your current semester to see the available courses.</p><div class="semester-grid">${[1,2,3,4].map(n => `<button class="semester-card" data-action="semester" data-level="${level}" data-semester="${n}"><span>0${n}</span><strong>Semester ${n}</strong><small>${n === 1 ? "3 courses available" : "Course template ready"}</small></button>`).join("")}</div></section>`;
+  const semesters = Array.from({ length: data.semesterCount }, (_, index) => index + 1);
+  app.innerHTML = `<section class="page intro"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; ${data.label}</div><p class="eyebrow">Select a semester</p><h1>${data.label} Physics</h1><p class="lead">${data.description} Choose your current semester to see the available courses.</p><div class="semester-grid">${semesters.map(n => `<button class="semester-card" data-action="semester" data-level="${level}" data-semester="${n}"><span>${String(n).padStart(2, "0")}</span><strong>Semester ${n}</strong><small>${n === 1 ? "3 courses available" : "Course template ready"}</small></button>`).join("")}</div></section>`;
 }
 
 function semesterPage(level, semester) {

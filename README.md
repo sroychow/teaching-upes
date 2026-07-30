@@ -2,7 +2,7 @@
 
 A responsive, static course-content website for undergraduate and postgraduate physics teaching.
 
-Place the university logo at `upes-logo.png` in the repository root. The site header displays this image beside the **UPES Physics · Applied Science Cluster** identity.
+Place the university logo at `upes-logo.png` in the repository root. The site header displays this image beside the **UPES Physics · Applied Science Cluster** identity. Until the image is present, the header uses a compact text fallback instead of showing a broken image.
 
 ## Local preview
 

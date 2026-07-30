@@ -5,11 +5,9 @@ const catalog = {
     description: "Build a rigorous foundation in the laws that govern matter, energy, space, and time.",
     coursesBySemester: {
       1: [
-          ["PHYS1037", "Mathematical Physics 1", "Description", "data/ug/sem1/classical-mechanics/index.html"],
-          ["MECH1012", "Mechanics", "Decription"],
-          ["PHYSXXXX", "Waves and Optics", ""],
-	  ["PHYSXXXX", "Optics", ""],
-	  ["CSEG1023", "Computational Techniques"]
+        { code: "PHY101", name: "Classical Mechanics", description: "Motion, forces, energy and the mathematical language of mechanics.", dataCard: "data/ug/sem1/classical-mechanics/datacard.json", content: "data/ug/sem1/classical-mechanics/index.html" },
+        { code: "PHY103", name: "Mathematical Methods", description: "Vectors, calculus and differential equations for physical systems.", dataCard: "data/ug/sem1/mathematical-methods/datacard.json" },
+        { code: "PHY105", name: "Experimental Physics", description: "Measurement, uncertainty and scientific practice in the laboratory.", dataCard: "data/ug/sem1/experimental-physics/datacard.json" }
       ],
       2: [],
       3: [],
@@ -26,9 +24,9 @@ const catalog = {
     description: "Move beyond the fundamentals through advanced theory, computation, and research-led study.",
     coursesBySemester: {
       1: [
-        ["PHY501", "Advanced Quantum Mechanics", "Symmetries, approximation methods and quantum dynamics."],
-        ["PHY503", "Statistical Field Theory", "Collective phenomena, phase transitions and renormalisation."],
-        ["PHY505", "Research Methods", "Literature, reproducible computation and research communication."]
+        { code: "PHY501", name: "Advanced Quantum Mechanics", description: "Symmetries, approximation methods and quantum dynamics.", dataCard: "data/pg/sem1/advanced-quantum-mechanics/datacard.json" },
+        { code: "PHY503", name: "Statistical Field Theory", description: "Collective phenomena, phase transitions and renormalisation.", dataCard: "data/pg/sem1/statistical-field-theory/datacard.json" },
+        { code: "PHY505", name: "Research Methods", description: "Literature, reproducible computation and research communication.", dataCard: "data/pg/sem1/research-methods/datacard.json" }
       ],
       2: [],
       3: [],
@@ -69,12 +67,12 @@ function semesterPage(level, semester) {
   const data = catalog[level];
   const courses = data.coursesBySemester[semester] || [];
   const courseCards = courses.length
-    ? courses.map((course, index) => `<article class="course-card" tabindex="0" data-action="course" data-level="${level}" data-semester="${semester}" data-course="${index}"><span class="course-code">${course[0]}</span><h2>${course[1]}</h2><p>${course[2]}</p><span class="explore">Explore course &nbsp; →</span></article>`).join("")
+    ? courses.map((course, index) => `<article class="course-card" tabindex="0" data-action="course" data-level="${level}" data-semester="${semester}" data-course="${index}"><span class="course-code">${course.code}</span><h2>${course.name}</h2><p>${course.description}</p><span class="explore">Explore course &nbsp; →</span></article>`).join("")
     : `<div class="empty-state"><h2>Course information coming soon</h2><p>No courses have been added to this semester yet.</p></div>`;
   app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${level}">${data.label}</button> &nbsp;/&nbsp; Semester ${semester}</div><p class="eyebrow">${data.label} · Semester ${semester}</p><h1>Your courses</h1><p class="lead">Everything you need for this semester, gathered in one place. Select a course to view its overview and learning modules.</p><div class="course-grid">${courseCards}</div></section>`;
 }
 
-function coursePage(level, semester, index) {
+async function coursePage(level, semester, index) {
   const data = catalog[level];
   const courses = data.coursesBySemester[semester] || [];
   const course = courses[index];
@@ -82,11 +80,29 @@ function coursePage(level, semester, index) {
     semesterPage(level, semester);
     return;
   }
-  const code = course[0];
-  const embeddedContent = course[3] && course[3].includes(`/sem${semester}/`)
-    ? `<section class="embedded-material"><div class="embedded-heading"><div><p class="eyebrow">Course material</p><h2>Lecture content</h2></div><a href="${course[3]}" target="_blank" rel="noopener">Open in a new tab ↗</a></div><iframe src="${course[3]}" title="${course[1]} course content" loading="lazy"></iframe></section>`
+  app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${level}">${data.label}</button> &nbsp;/&nbsp; <button data-action="semester" data-level="${level}" data-semester="${semester}">Semester ${semester}</button></div><div class="loading-state">Loading course information…</div></section>`;
+
+  try {
+    const response = await fetch(course.dataCard);
+    if (!response.ok) throw new Error(`Could not load ${course.dataCard}`);
+    const card = await response.json();
+    renderCourseDataCard(data.label, semester, course, card);
+  } catch (error) {
+    app.innerHTML = `<section class="page"><p class="eyebrow">Course unavailable</p><h1>We could not load this course.</h1><p class="lead">Check that <code>${course.dataCard}</code> exists and contains valid JSON.</p><button class="back-button" data-action="semester" data-level="${level}" data-semester="${semester}">← All courses</button></section>`;
+    console.error(error);
+  }
+}
+
+function renderCourseDataCard(levelLabel, semester, course, card) {
+  const credits = card.credits;
+  const embeddedContent = course.content && course.content.includes(`/sem${semester}/`)
+    ? `<section class="embedded-material"><div class="embedded-heading"><div><p class="eyebrow">Course material</p><h2>Lecture content</h2></div><a href="${course.content}" target="_blank" rel="noopener">Open in a new tab ↗</a></div><iframe src="${course.content}" title="${card.courseName} course content" loading="lazy"></iframe></section>`
     : "";
-  app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${level}">${data.label}</button> &nbsp;/&nbsp; <button data-action="semester" data-level="${level}" data-semester="${semester}">Semester ${semester}</button> &nbsp;/&nbsp; ${code}</div><div class="course-layout"><div><p class="eyebrow">${code} · Semester ${semester}</p><h1>${course[1]}</h1><p class="lead">${course[2]} This course page is ready for lecture notes, problem sheets, readings, and assessments.</p><h2 style="font-size:36px;margin-top:55px">Course modules</h2><ol class="module-list"><li><span>01</span>Foundations and core concepts</li><li><span>02</span>Methods and worked examples</li><li><span>03</span>Applications and problem solving</li><li><span>04</span>Review and assessment</li></ol></div><aside class="course-meta"><div class="meta-row"><small>Course level</small>${data.label}</div><div class="meta-row"><small>Semester</small>${semester}</div><div class="meta-row"><small>Course code</small>${code}</div><div class="meta-row"><small>Course materials</small>Notes · Problems · Reading</div><button class="back-button" data-action="semester" data-level="${level}" data-semester="${semester}">← All courses</button></aside></div>${embeddedContent}</section>`;
+  app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${levelLabel.toLowerCase()}">${levelLabel}</button> &nbsp;/&nbsp; <button data-action="semester" data-level="${levelLabel.toLowerCase()}" data-semester="${semester}">Semester ${semester}</button> &nbsp;/&nbsp; ${card.courseCode}</div><p class="eyebrow">${card.courseCode} · Semester ${semester}</p><h1>${card.courseName}</h1><div class="credit-grid"><div><b>${credits.L}</b><small>Lecture</small></div><div><b>${credits.T}</b><small>Tutorial</small></div><div><b>${credits.P}</b><small>Practical</small></div><div><b>${credits.C}</b><small>Total credits</small></div></div><div class="data-card-grid"><section><h2>Course objectives</h2><ol class="content-list">${card.objectives.map(item => `<li>${item}</li>`).join("")}</ol></section><section><h2>Course outcomes</h2><div class="outcome-list">${card.outcomes.map(item => `<div><b>${item.code}</b><p>${item.statement}</p></div>`).join("")}</div></section></div><section class="syllabus"><p class="eyebrow">Course structure</p><h2>Syllabus</h2>${card.syllabus.map((unit, index) => `<article><span>${String(index + 1).padStart(2, "0")}</span><div><h3>Unit ${toRoman(index + 1)} · ${unit.title}</h3><p>${unit.topics}</p></div><strong>${unit.lectureHours} hours</strong></article>`).join("")}</section>${embeddedContent}</section>`;
+}
+
+function toRoman(number) {
+  return ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"][number - 1] || String(number);
 }
 
 function aboutPage() {

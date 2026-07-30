@@ -19,16 +19,48 @@ Courses are grouped under `coursesBySemester` in `app.js`. Add each course to th
 ```js
 coursesBySemester: {
   1: [
-    ["PHY101", "Classical Mechanics", "Course description.", "data/ug/sem1/classical-mechanics/index.html"]
+    {
+      code: "PHY101",
+      name: "Classical Mechanics",
+      description: "Course description.",
+      dataCard: "data/ug/sem1/classical-mechanics/datacard.json",
+      content: "data/ug/sem1/classical-mechanics/index.html"
+    }
   ],
-  2: [
-    ["PHY201", "Electromagnetism", "Course description.", "data/ug/sem2/electromagnetism/index.html"]
-  ],
+  2: [],
   3: []
 }
 ```
 
-The four values are the course code, course name, description, and optional static HTML path. Keep an empty array for a semester that does not have course information yet. The semester cards automatically show the number of configured courses.
+`dataCard` is required and points to the JSON file used to construct the course landing page. `content` is optional and embeds a separate static HTML lesson beneath the generated landing page. Keep an empty array for a semester that does not have course information yet. The semester cards automatically show the number of configured courses.
+
+### Course data-card format
+
+Every course folder contains a `datacard.json` with the course identity, L–T–P–C credit breakdown, objectives, outcomes and syllabus:
+
+```json
+{
+  "courseCode": "PHY101",
+  "courseName": "Classical Mechanics",
+  "credits": { "L": 3, "T": 1, "P": 0, "C": 4 },
+  "objectives": [
+    "Develop a mathematical understanding of motion and forces."
+  ],
+  "outcomes": [
+    { "code": "CO1", "statement": "Apply Newton's laws to physical systems." },
+    { "code": "CO2", "statement": "Use conservation laws to solve problems." }
+  ],
+  "syllabus": [
+    {
+      "title": "Kinematics and Newton's Laws",
+      "lectureHours": 10,
+      "topics": "Reference frames, vectors, motion and equations of motion."
+    }
+  ]
+}
+```
+
+The course landing page reads this file at runtime, so objectives, outcomes, credit values and syllabus units can be updated without editing HTML or the rendering logic.
 
 ## Adding static HTML course material
 
@@ -39,24 +71,26 @@ data/
 ├── ug/
 │   └── sem1/
 │       └── classical-mechanics/
+│           ├── datacard.json
 │           ├── index.html
 │           └── course.css
 └── pg/
     └── sem1/
         └── advanced-quantum-mechanics/
+            ├── datacard.json
             ├── index.html
             └── course.css
 ```
 
-Link the HTML file from the matching course entry in `app.js` by adding its path as the fourth value:
+Link optional HTML from the matching course object in `app.js` using its `content` property:
 
 ```js
-["PHY101", "Classical Mechanics", "Course description.", "data/ug/sem1/classical-mechanics/index.html"]
+content: "data/ug/sem1/classical-mechanics/index.html"
 ```
 
 The course page embeds that file in an `iframe` and also provides an **Open in a new tab** link. Because an iframe is a separate document, a stylesheet referenced inside the course HTML—such as `<link rel="stylesheet" href="course.css">`—only styles that course and cannot override the main website. Paths are relative to the course HTML file, so images can similarly be placed beside it and referenced with `src="diagram.png"`.
 
-The repository includes `data/ug/sem1/classical-mechanics/` as a working example. When adding another embedded course, set its fourth catalog value only for the semester in which that course appears. Keep folder and file names lowercase and avoid spaces so their GitHub Pages URLs remain predictable.
+The repository includes `data/ug/sem1/classical-mechanics/` as a working example. Keep folder and file names lowercase and avoid spaces so their GitHub Pages URLs remain predictable.
 
 ## Deployment
 

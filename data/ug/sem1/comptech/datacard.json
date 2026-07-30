@@ -62,7 +62,7 @@
     {
       "name": "Gnuplot",
       "desc": "Data Analysis and Visualization with Gnuplot",
-      "link": "simulators/latex.html"
+      "link": "simulators/gnuplot.html"
     },
     
   ]

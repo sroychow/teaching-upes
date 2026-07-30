@@ -5,9 +5,11 @@ const catalog = {
     description: "Build a rigorous foundation in the laws that govern matter, energy, space, and time.",
     coursesBySemester: {
       1: [
-        ["PHY101", "Classical Mechanics", "Motion, forces, energy and the mathematical language of mechanics.", "data/ug/sem1/classical-mechanics/index.html"],
-        ["PHY103", "Mathematical Methods", "Vectors, calculus and differential equations for physical systems."],
-        ["PHY105", "Experimental Physics", "Measurement, uncertainty and scientific practice in the laboratory."]
+          ["PHYS1037", "Mathematical Physics 1", "Description", "data/ug/sem1/classical-mechanics/index.html"],
+          ["MECH1012", "Mechanics", "Decription"],
+          ["PHYSXXXX", "Waves and Optics", ""],
+	  ["PHYSXXXX", "Optics", ""],
+	  ["CSEG1023", "Computational Techniques"]
       ],
       2: [],
       3: [],

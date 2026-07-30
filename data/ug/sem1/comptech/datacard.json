@@ -47,5 +47,12 @@
       "lectureHours": 6,
       "topics": "Introduction to Gnuplot, basic Gnuplot commands for simple plots, plotting data from a file, saving and exporting, multiple data sets per file; understanding data with Gnuplot, data analysis with Gnuplot."
     }
+  ],
+  "simulators": [
+    {
+      "name": "Python Simulator",
+      "desc": "tatic browser simulators for teaching Python basics, scientific programming, and data handling.",
+      "link": "simulators/python.html"
+    }
   ]
 }

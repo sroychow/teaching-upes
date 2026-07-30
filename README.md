@@ -12,6 +12,24 @@ python3 -m http.server 8000
 
 Open `http://localhost:8000`. Course data can be customised in `app.js`.
 
+## Updating courses by semester
+
+Courses are grouped under `coursesBySemester` in `app.js`. Add each course to the numbered semester in which it should appear:
+
+```js
+coursesBySemester: {
+  1: [
+    ["PHY101", "Classical Mechanics", "Course description.", "data/ug/sem1/classical-mechanics/index.html"]
+  ],
+  2: [
+    ["PHY201", "Electromagnetism", "Course description.", "data/ug/sem2/electromagnetism/index.html"]
+  ],
+  3: []
+}
+```
+
+The four values are the course code, course name, description, and optional static HTML path. Keep an empty array for a semester that does not have course information yet. The semester cards automatically show the number of configured courses.
+
 ## Adding static HTML course material
 
 Course material can live in its own folder, including its own stylesheets and assets. Use this structure:

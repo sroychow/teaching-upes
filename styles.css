@@ -83,6 +83,9 @@ h1 { font-size: clamp(54px, 6.3vw, 92px); line-height: .98; letter-spacing: -.04
 .course-card h2 { font-size: 30px; margin: 35px 0 12px; }
 .course-card p { color: var(--muted); line-height: 1.55; }
 .course-card .explore { margin-top: auto; font-size: 13px; font-weight: 700; }
+.empty-state { grid-column: 1 / -1; padding: 48px; border: 1px dashed var(--line); border-radius: 7px; background: var(--cream); text-align: center; }
+.empty-state h2 { margin-bottom: 10px; font-size: 30px; }
+.empty-state p { margin: 0; color: var(--muted); }
 .course-layout { display: grid; grid-template-columns: 1.25fr .75fr; gap: 80px; }
 .course-meta { border-left: 1px solid var(--line); padding-left: 40px; }
 .meta-row { padding: 20px 0; border-bottom: 1px solid var(--line); }

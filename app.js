@@ -3,21 +3,35 @@ const catalog = {
     label: "Undergraduate",
     semesterCount: 8,
     description: "Build a rigorous foundation in the laws that govern matter, energy, space, and time.",
-    semesters: [
-      ["PHY101", "Classical Mechanics", "Motion, forces, energy and the mathematical language of mechanics.", "data/ug/sem1/classical-mechanics/index.html"],
-      ["PHY103", "Mathematical Methods", "Vectors, calculus and differential equations for physical systems."],
-      ["PHY105", "Experimental Physics", "Measurement, uncertainty and scientific practice in the laboratory."]
-    ]
+    coursesBySemester: {
+      1: [
+        ["PHY101", "Classical Mechanics", "Motion, forces, energy and the mathematical language of mechanics.", "data/ug/sem1/classical-mechanics/index.html"],
+        ["PHY103", "Mathematical Methods", "Vectors, calculus and differential equations for physical systems."],
+        ["PHY105", "Experimental Physics", "Measurement, uncertainty and scientific practice in the laboratory."]
+      ],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
+      7: [],
+      8: []
+    }
   },
   postgraduate: {
     label: "Postgraduate",
     semesterCount: 4,
     description: "Move beyond the fundamentals through advanced theory, computation, and research-led study.",
-    semesters: [
-      ["PHY501", "Advanced Quantum Mechanics", "Symmetries, approximation methods and quantum dynamics."],
-      ["PHY503", "Statistical Field Theory", "Collective phenomena, phase transitions and renormalisation."],
-      ["PHY505", "Research Methods", "Literature, reproducible computation and research communication."]
-    ]
+    coursesBySemester: {
+      1: [
+        ["PHY501", "Advanced Quantum Mechanics", "Symmetries, approximation methods and quantum dynamics."],
+        ["PHY503", "Statistical Field Theory", "Collective phenomena, phase transitions and renormalisation."],
+        ["PHY505", "Research Methods", "Literature, reproducible computation and research communication."]
+      ],
+      2: [],
+      3: [],
+      4: []
+    }
   }
 };
 
@@ -46,19 +60,27 @@ function pathCard(key, number, title, copy) {
 function levelPage(level) {
   const data = catalog[level];
   const semesters = Array.from({ length: data.semesterCount }, (_, index) => index + 1);
-  app.innerHTML = `<section class="page intro"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; ${data.label}</div><p class="eyebrow">Select a semester</p><h1>${data.label} Physics</h1><p class="lead">${data.description} Choose your current semester to see the available courses.</p><div class="semester-grid">${semesters.map(n => `<button class="semester-card" data-action="semester" data-level="${level}" data-semester="${n}"><span>${String(n).padStart(2, "0")}</span><strong>Semester ${n}</strong><small>${n === 1 ? "3 courses available" : "Course template ready"}</small></button>`).join("")}</div></section>`;
+  app.innerHTML = `<section class="page intro"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; ${data.label}</div><p class="eyebrow">Select a semester</p><h1>${data.label} Physics</h1><p class="lead">${data.description} Choose your current semester to see the available courses.</p><div class="semester-grid">${semesters.map(n => { const count = (data.coursesBySemester[n] || []).length; return `<button class="semester-card" data-action="semester" data-level="${level}" data-semester="${n}"><span>${String(n).padStart(2, "0")}</span><strong>Semester ${n}</strong><small>${count} ${count === 1 ? "course" : "courses"} available</small></button>`; }).join("")}</div></section>`;
 }
 
 function semesterPage(level, semester) {
   const data = catalog[level];
-  const courses = data.semesters.map((course, index) => [course[0].replace(/\d/, String(semester)), course[1], course[2], index]);
-  app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${level}">${data.label}</button> &nbsp;/&nbsp; Semester ${semester}</div><p class="eyebrow">${data.label} · Semester ${semester}</p><h1>Your courses</h1><p class="lead">Everything you need for this semester, gathered in one place. Select a course to view its overview and learning modules.</p><div class="course-grid">${courses.map(c => `<article class="course-card" tabindex="0" data-action="course" data-level="${level}" data-semester="${semester}" data-course="${c[3]}"><span class="course-code">${c[0]}</span><h2>${c[1]}</h2><p>${c[2]}</p><span class="explore">Explore course &nbsp; →</span></article>`).join("")}</div></section>`;
+  const courses = data.coursesBySemester[semester] || [];
+  const courseCards = courses.length
+    ? courses.map((course, index) => `<article class="course-card" tabindex="0" data-action="course" data-level="${level}" data-semester="${semester}" data-course="${index}"><span class="course-code">${course[0]}</span><h2>${course[1]}</h2><p>${course[2]}</p><span class="explore">Explore course &nbsp; →</span></article>`).join("")
+    : `<div class="empty-state"><h2>Course information coming soon</h2><p>No courses have been added to this semester yet.</p></div>`;
+  app.innerHTML = `<section class="page"><div class="breadcrumb"><button data-action="home">Home</button> &nbsp;/&nbsp; <button data-action="level" data-level="${level}">${data.label}</button> &nbsp;/&nbsp; Semester ${semester}</div><p class="eyebrow">${data.label} · Semester ${semester}</p><h1>Your courses</h1><p class="lead">Everything you need for this semester, gathered in one place. Select a course to view its overview and learning modules.</p><div class="course-grid">${courseCards}</div></section>`;
 }
 
 function coursePage(level, semester, index) {
   const data = catalog[level];
-  const course = data.semesters[index];
-  const code = course[0].replace(/\d/, String(semester));
+  const courses = data.coursesBySemester[semester] || [];
+  const course = courses[index];
+  if (!course) {
+    semesterPage(level, semester);
+    return;
+  }
+  const code = course[0];
   const embeddedContent = course[3] && course[3].includes(`/sem${semester}/`)
     ? `<section class="embedded-material"><div class="embedded-heading"><div><p class="eyebrow">Course material</p><h2>Lecture content</h2></div><a href="${course[3]}" target="_blank" rel="noopener">Open in a new tab ↗</a></div><iframe src="${course[3]}" title="${course[1]} course content" loading="lazy"></iframe></section>`
     : "";
